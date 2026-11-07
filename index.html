@@ -436,6 +436,9 @@ em.serif { color: var(--berry); }
   .project .devices { grid-template-rows: minmax(0, 1fr); overflow: visible; }
   .project .phone { height: 34svh; width: auto; max-width: 60%; aspect-ratio: 9 / 19.5; }
   .project .phone img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; }
+  .project .phone { border-radius: 20px; padding: 5px; }
+  .project .phone img { border-radius: 15px; }
+  .project .phone::before { content: ''; position: absolute; z-index: 2; top: 9px; left: 50%; width: 30%; height: 8px; transform: translateX(-50%); background: #140a14; border-radius: 99px; }
 }
 </style>
 </head>
