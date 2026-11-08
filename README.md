@@ -1,5 +1,10 @@
 # Yasmine, portfolio
 
+**Live site:** [yasmine.page](https://yasmine.page/)
+
+![Portfolio preview](images/readme-preview.JPG)
+
+
 A single-page portfolio for Yasmine, a Shopify and WordPress web developer in Bangkok.
 Plain HTML, CSS and JavaScript. Scroll animations use GSAP and ScrollTrigger from cdnjs;
 the page still works if they fail to load.
