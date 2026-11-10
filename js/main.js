@@ -180,6 +180,7 @@ if (document.readyState === 'complete') startMotion(); else addEventListener('lo
   // Drag the line left or right (it keeps sliding a little when you let go)
   let dragging = false, dragX = 0, fling = 0;
   stage.addEventListener('pointerdown', e => {
+    if (e.button !== 0) return;                   // only a left click or a touch drags (right-click opens menus and DevTools)
     dragging = true; dragX = e.clientX; fling = 0;
     stage.setPointerCapture(e.pointerId); stage.classList.add('grabbing');
   });
@@ -191,6 +192,14 @@ if (document.readyState === 'complete') startMotion(); else addEventListener('lo
   const endDrag = () => { dragging = false; stage.classList.remove('grabbing'); };
   stage.addEventListener('pointerup', endDrag);
   stage.addEventListener('pointercancel', endDrag);
+  stage.addEventListener('lostpointercapture', endDrag);
+  // Leaving the page (a menu, DevTools, another tab) must never leave the line stuck mid-drag or mid-ripple
+  const settle = () => { endDrag(); lastX = lastY = null; fling = 0; disp.fill(0); vel.fill(0); };
+  addEventListener('blur', settle);
+  stage.addEventListener('contextmenu', settle);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) settle(); });
+  // Re-measure whenever the stage itself changes size, not only on window resize
+  if ('ResizeObserver' in window) new ResizeObserver(() => { resize(); fill(); }).observe(stage);
 
   let last = performance.now(), visible = true;
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(stage);
