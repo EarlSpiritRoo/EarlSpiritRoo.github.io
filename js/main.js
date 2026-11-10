@@ -208,7 +208,8 @@ if (document.readyState === 'complete') startMotion(); else addEventListener('lo
     requestAnimationFrame(frame);                 // keep the loop alive whatever happens below
     const dt = Math.min(0.033, Math.max(0, (now - last) / 1000)); last = now;
     if (W !== stage.offsetWidth) resize();        // the window or device changed size
-    if (visible && !document.hidden) {
+    // While DevTools or a resize briefly gives the line no width, skip drawing: dividing by zero would break every card
+    if (W > 0 && visible && !document.hidden) {
       // Wave along the rope (two small steps for stability)
       for (let s = 0; s < 2; s++) {
         const h = dt / 2;
@@ -236,6 +237,7 @@ if (document.readyState === 'complete') startMotion(); else addEventListener('lo
         const target = Math.atan(slope) * 57.3 * 0.9;
         c.swingV += ((target - c.swing) * 60 - c.swingV * 7) * dt;
         c.swing += c.swingV * dt;
+        if (!Number.isFinite(c.swing) || !Number.isFinite(c.swingV)) { c.swing = 0; c.swingV = 0; }   // never let a bad frame freeze a card
         c.el.style.transform = `translate(${x.toFixed(1)}px, ${(y + 4).toFixed(1)}px) rotate(${(c.tilt + c.swing).toFixed(2)}deg)`;
       });
     }
