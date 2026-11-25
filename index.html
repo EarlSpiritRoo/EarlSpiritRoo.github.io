@@ -21,6 +21,8 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<button type="button" id="motionToggle" class="motion-toggle" hidden>Pause animations</button>
 
 <header class="hero">
   <div class="header">
@@ -69,7 +71,7 @@
   </div>
 </header>
 
-<main>
+<main id="main-content" tabindex="-1">
   <!-- ABOUT -->
   <section class="about" id="about" aria-label="About me">
     <div class="inner">
@@ -98,9 +100,9 @@
           <a class="visit" href="https://marionskitchen.com" target="_blank" rel="noopener">Visit marionskitchen.com ↗</a>
         </div>
         <div class="devices">
-          <div class="laptop"><img src="images/marions-desktop.jpg" alt="Marion’s Kitchen homepage on desktop"></div>
+          <div class="laptop"><img src="images/marions-desktop.jpg" alt="Marion’s Kitchen homepage on desktop" width="1400" height="582" decoding="async" loading="lazy"></div>
           <div class="lbase"></div>
-          <div class="phone"><img src="images/marions-mobile.jpg" alt="Marion’s Kitchen on mobile"></div>
+          <div class="phone"><img src="images/marions-mobile.jpg" alt="Marion’s Kitchen on mobile" width="371" height="719" decoding="async" loading="lazy"></div>
         </div>
       </div>
     </article>
@@ -114,9 +116,9 @@
           <a class="visit" href="https://cookdinehost.com" target="_blank" rel="noopener">Visit cookdinehost.com ↗</a>
         </div>
         <div class="devices">
-          <div class="laptop"><img src="images/cookdinehost-desktop.jpg" alt="Cook Dine Host homepage on desktop" loading="lazy"></div>
+          <div class="laptop"><img src="images/cookdinehost-desktop.jpg" alt="Cook Dine Host homepage on desktop" loading="lazy" width="1400" height="634" decoding="async"></div>
           <div class="lbase"></div>
-          <div class="phone"><img src="images/cookdinehost-mobile.jpg" alt="Cook Dine Host on mobile" loading="lazy"></div>
+          <div class="phone"><img src="images/cookdinehost-mobile.jpg" alt="Cook Dine Host on mobile" loading="lazy" width="371" height="691" decoding="async"></div>
         </div>
       </div>
     </article>
@@ -130,9 +132,9 @@
           <a class="visit" href="https://makokitchenware.com" target="_blank" rel="noopener">Visit makokitchenware.com ↗</a>
         </div>
         <div class="devices">
-          <div class="laptop"><img src="images/mako-desktop.jpg" alt="MAKO Kitchenware homepage on desktop" loading="lazy"></div>
+          <div class="laptop"><img src="images/mako-desktop.jpg" alt="MAKO Kitchenware homepage on desktop" loading="lazy" width="1400" height="629" decoding="async"></div>
           <div class="lbase"></div>
-          <div class="phone"><img src="images/mako-mobile.jpg" alt="MAKO Kitchenware on mobile" loading="lazy"></div>
+          <div class="phone"><img src="images/mako-mobile.jpg" alt="MAKO Kitchenware on mobile" loading="lazy" width="289" height="628" decoding="async"></div>
         </div>
       </div>
     </article>
@@ -212,25 +214,25 @@
       <p class="sub">Most customers shop on their phones, so that’s where I check my work first. Tap a screen to see it the way they do.</p>
     </div>
     <div class="carousel" id="carousel">
-      <button class="ccard" style="--i:-3;--r:-5deg" data-shot="5" aria-label="Show MAKO wok care guide on the phone"><img src="images/mako-guide-mobile.jpg" alt="" loading="lazy"></button>
-      <button class="ccard" style="--i:-2;--r:3deg" data-shot="3" aria-label="Show Cook Dine Host recipe page on the phone"><img src="images/cookdinehost-recipe-mobile.jpg" alt="" loading="lazy"></button>
-      <button class="ccard" style="--i:-1;--r:-3deg" data-shot="1" aria-label="Show Marion’s Kitchen recipe page on the phone"><img src="images/marions-recipe-mobile.jpg" alt="" loading="lazy"></button>
+      <button class="ccard" style="--i:-3;--r:-5deg" data-shot="5" aria-label="Show MAKO wok care guide on the phone"><img src="images/mako-guide-mobile.jpg" alt="" loading="lazy" width="338" height="734" decoding="async"></button>
+      <button class="ccard" style="--i:-2;--r:3deg" data-shot="3" aria-label="Show Cook Dine Host recipe page on the phone"><img src="images/cookdinehost-recipe-mobile.jpg" alt="" loading="lazy" width="334" height="746" decoding="async"></button>
+      <button class="ccard" style="--i:-1;--r:-3deg" data-shot="1" aria-label="Show Marion’s Kitchen recipe page on the phone"><img src="images/marions-recipe-mobile.jpg" alt="" loading="lazy" width="332" height="755" decoding="async"></button>
       <button class="carr prev" type="button" aria-label="Previous screen">‹</button>
       <div class="phone-big" aria-live="polite">
         <span class="island" aria-hidden="true"></span><span class="clock" aria-hidden="true">9:41</span>
         <div class="pscreen">
-          <img data-shot="0" data-site="marions" class="show" src="images/marions-mobile.jpg" alt="Marion’s Kitchen homepage on a phone">
-          <img data-shot="1" data-site="marions" src="images/marions-recipe-mobile.jpg" alt="Marion’s Kitchen recipe page on a phone" loading="lazy">
-          <img data-shot="2" data-site="cookdinehost" src="images/cookdinehost-mobile.jpg" alt="Cook Dine Host cookware sets on a phone" loading="lazy">
-          <img data-shot="3" data-site="cookdinehost" src="images/cookdinehost-recipe-mobile.jpg" alt="Cook Dine Host recipe page on a phone" loading="lazy">
-          <img data-shot="4" data-site="mako" src="images/mako-mobile.jpg" alt="MAKO collections on a phone" loading="lazy">
-          <img data-shot="5" data-site="mako" src="images/mako-guide-mobile.jpg" alt="MAKO wok care guide on a phone" loading="lazy">
+          <img data-shot="0" data-site="marions" class="show" src="images/marions-mobile.jpg" alt="Marion’s Kitchen homepage on a phone" width="371" height="719" decoding="async" loading="lazy">
+          <img data-shot="1" data-site="marions" src="images/marions-recipe-mobile.jpg" alt="Marion’s Kitchen recipe page on a phone" loading="lazy" width="332" height="755" decoding="async">
+          <img data-shot="2" data-site="cookdinehost" src="images/cookdinehost-mobile.jpg" alt="Cook Dine Host cookware sets on a phone" loading="lazy" width="371" height="691" decoding="async">
+          <img data-shot="3" data-site="cookdinehost" src="images/cookdinehost-recipe-mobile.jpg" alt="Cook Dine Host recipe page on a phone" loading="lazy" width="334" height="746" decoding="async">
+          <img data-shot="4" data-site="mako" src="images/mako-mobile.jpg" alt="MAKO collections on a phone" loading="lazy" width="289" height="628" decoding="async">
+          <img data-shot="5" data-site="mako" src="images/mako-guide-mobile.jpg" alt="MAKO wok care guide on a phone" loading="lazy" width="338" height="734" decoding="async">
         </div>
       </div>
       <button class="carr next" type="button" aria-label="Next screen">›</button>
-      <button class="ccard" style="--i:1;--r:4deg" data-shot="2" aria-label="Show Cook Dine Host cookware sets on the phone"><img src="images/cookdinehost-mobile.jpg" alt="" loading="lazy"></button>
-      <button class="ccard" style="--i:2;--r:-3deg" data-shot="4" aria-label="Show MAKO collections on the phone"><img src="images/mako-mobile.jpg" alt="" loading="lazy"></button>
-      <button class="ccard" style="--i:3;--r:5deg" data-shot="0" aria-label="Show Marion’s Kitchen homepage on the phone"><img src="images/marions-mobile.jpg" alt="" loading="lazy"></button>
+      <button class="ccard" style="--i:1;--r:4deg" data-shot="2" aria-label="Show Cook Dine Host cookware sets on the phone"><img src="images/cookdinehost-mobile.jpg" alt="" loading="lazy" width="371" height="691" decoding="async"></button>
+      <button class="ccard" style="--i:2;--r:-3deg" data-shot="4" aria-label="Show MAKO collections on the phone"><img src="images/mako-mobile.jpg" alt="" loading="lazy" width="289" height="628" decoding="async"></button>
+      <button class="ccard" style="--i:3;--r:5deg" data-shot="0" aria-label="Show Marion’s Kitchen homepage on the phone"><img src="images/marions-mobile.jpg" alt="" loading="lazy" width="371" height="719" decoding="async"></button>
     </div>
     <p class="now">Now showing: <a id="nowLink" href="https://marionskitchen.com" target="_blank" rel="noopener">Marion’s Kitchen ↗</a></p>
   </section>
@@ -247,7 +249,7 @@
       </div>
       <p class="sk-sub">Explore the tools below: drag the line or move your cursor across it.</p>
     </div>
-    <div class="line-stage" id="lineStage">
+    <div class="line-stage still" id="lineStage">
       <svg class="rope" id="rope" aria-hidden="true"><path id="ropePath"/></svg>
       <ul class="cards" id="cards" aria-label="Tools and skills">
           <li class="card" style="--bg:#bfa6ff"><span class="pin" aria-hidden="true"></span><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#F7DF1E" d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z"/></svg></span><strong>JavaScript</strong><small>Front-end logic</small></li>
@@ -298,8 +300,8 @@
 
 
 <!-- Animation library (GSAP + ScrollTrigger). The page works without it. -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="js/main.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script defer src="js/main.js"></script>
 </body>
 </html>
