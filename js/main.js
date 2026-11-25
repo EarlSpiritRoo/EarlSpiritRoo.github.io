@@ -5,13 +5,22 @@ const CONFIG = { email: 'hello@yasmine.page' };
 document.querySelectorAll('[data-email-link]').forEach(a => { a.href = 'mailto:' + CONFIG.email; });
 document.querySelectorAll('[data-email-text]').forEach(a => { a.textContent = CONFIG.email; });
 
-const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
+const reduceMotion = motionPreference.matches || sessionStorage.getItem('portfolio-motion') === 'paused';
+const motionToggle = document.getElementById('motionToggle');
+if (motionToggle && !motionPreference.matches) {
+  motionToggle.hidden = false;
+  motionToggle.textContent = reduceMotion ? 'Resume animations' : 'Pause animations';
+  motionToggle.addEventListener('click', () => { sessionStorage.setItem('portfolio-motion', reduceMotion ? 'running' : 'paused'); location.reload(); });
+}
+if (reduceMotion) document.documentElement.classList.add('motion-paused');
 
 /* ---------------- Fit the keyboard to the screen ---------------- */
 const kbWrap = document.getElementById('kbWrap');
 const fitKeyboard = () => { const cs = getComputedStyle(kbWrap); const room = kbWrap.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 12; kbWrap.style.setProperty('--s', Math.min(1, room / 656).toFixed(4)); };
 fitKeyboard();
-new ResizeObserver(fitKeyboard).observe(kbWrap);
+if ('ResizeObserver' in window) new ResizeObserver(fitKeyboard).observe(kbWrap);
+else addEventListener('resize', fitKeyboard);
 
 /* ---------------- Keys press themselves: Y A S M I N E, then Enter ---------------- */
 const kb = document.getElementById('kb');
@@ -35,7 +44,8 @@ kb.addEventListener('pointerleave', () => { pointerInside = false; });
    Everything is visible without JavaScript; GSAP only animates in.
    ================================================================ */
 function startMotion() {
-  if (reduceMotion || !window.gsap || !window.ScrollTrigger) { setTimeout(tick, 900); return; }
+  if (reduceMotion) return;
+  if (!window.gsap || !window.ScrollTrigger) { setTimeout(tick, 900); return; }
   gsap.registerPlugin(ScrollTrigger);
 
   // 1. Hero: headline lines rise up, then the keys drop in one by one
@@ -127,8 +137,9 @@ if (document.readyState === 'complete') startMotion(); else addEventListener('lo
   const stage = document.getElementById('lineStage');
   const ropePath = document.getElementById('ropePath');
   const list = document.getElementById('cards');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) { stage.classList.add('still'); return; }
+  const reduce = reduceMotion;
+  if (reduce) return;
+  stage.classList.remove('still');
 
   // Repeat the cards so the line never runs out
   const originals = [...list.children];
@@ -201,11 +212,17 @@ if (document.readyState === 'complete') startMotion(); else addEventListener('lo
   // Re-measure whenever the stage itself changes size, not only on window resize
   if ('ResizeObserver' in window) new ResizeObserver(() => { resize(); fill(); }).observe(stage);
 
-  let last = performance.now(), visible = true;
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(stage);
+  let last = performance.now(), visible = !('IntersectionObserver' in window), raf = null;
+  function schedule() {
+    if (visible && !document.hidden && raf === null) { last = performance.now(); raf = requestAnimationFrame(frame); }
+  }
+  if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { visible = e.isIntersecting; schedule(); }).observe(stage);
+  document.addEventListener('visibilitychange', schedule);
 
   function frame(now) {
-    requestAnimationFrame(frame);                 // keep the loop alive whatever happens below
+    raf = null;
+    if (!visible || document.hidden) return;
+    raf = requestAnimationFrame(frame);
     const dt = Math.min(0.033, Math.max(0, (now - last) / 1000)); last = now;
     if (W !== stage.offsetWidth) resize();        // the window or device changed size
     // While DevTools or a resize briefly gives the line no width, skip drawing: dividing by zero would break every card
@@ -242,14 +259,14 @@ if (document.readyState === 'complete') startMotion(); else addEventListener('lo
       });
     }
   }
-  requestAnimationFrame(frame);
+  schedule();
 })();
 
 /* ================================================================
    HEADER PILL, PHONE CAROUSEL AND HOW-I-WORK STEPS
    ================================================================ */
 (() => {
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduce = reduceMotion;
 
 
   /* Phone carousel: tap a card (or use the arrows) to show that screen in the phone */
@@ -262,21 +279,22 @@ if (document.readyState === 'complete') startMotion(); else addEventListener('lo
   let shot = 0, autoTimer = null, carouselSeen = false;
   function showShot(k) {
     shot = (k + shots.length) % shots.length;
-    shots.forEach((img, i) => img.classList.toggle('show', i === shot));
-    ccards.forEach(c => c.classList.toggle('on', +c.dataset.shot === shot));
+    shots.forEach((img, i) => { img.classList.toggle('show', i === shot); img.setAttribute('aria-hidden', String(i !== shot)); });
+    ccards.forEach(c => { const active = +c.dataset.shot === shot; c.classList.toggle('on', active); c.setAttribute('aria-pressed', String(active)); });
     const site = SITES[shots[shot].dataset.site];
     nowLink.textContent = site.name + ' ↗'; nowLink.href = site.url;
   }
-  const startAuto = () => { clearInterval(autoTimer); if (!reduce) autoTimer = setInterval(() => { if (carouselSeen && !document.hidden) showShot(shot + 1); }, 6000); };
+  const startAuto = () => { clearInterval(autoTimer); if (!reduce) autoTimer = setInterval(() => { if (carouselSeen && !document.hidden && !carousel.contains(document.activeElement) && !carousel.matches(':hover')) showShot(shot + 1); }, 6000); };
   ccards.forEach(c => c.addEventListener('click', () => { showShot(+c.dataset.shot); startAuto(); }));
   document.querySelector('.carr.prev').addEventListener('click', () => { showShot(shot - 1); startAuto(); });
   document.querySelector('.carr.next').addEventListener('click', () => { showShot(shot + 1); startAuto(); });
   const carousel = document.getElementById('carousel');
   if (!reduce) carousel.classList.add('prefan');   // cards start tucked behind the phone
-  new IntersectionObserver(([e]) => {
+  if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => {
     carouselSeen = e.isIntersecting;
     if (e.isIntersecting) carousel.classList.remove('prefan');   // then fan out
   }, { threshold: .3 }).observe(carousel);
+  else { carouselSeen = true; carousel.classList.remove('prefan'); }
   showShot(0); startAuto();
 })();
 
