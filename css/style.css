@@ -640,3 +640,14 @@ em.serif { font: italic 500 1em/1 var(--serif); color: var(--rose); letter-spaci
   .about { padding-top: 100px; }
   .star-big { top: 50px; right: 8%; } .star-small { top: 110px; right: 20%; }
 }
+
+/* ---- Fixes: readable tiles, visible buttons and tags on coloured sections ---- */
+.project { --rose-deep: #c24f7c; }
+.project.pv2 { --bg: var(--rose-deep); }               /* a deeper rose so white text is easy to read */
+.tiles b { color: var(--aub); }                         /* tile titles were inheriting white text */
+.tiles small { color: var(--muted); }
+.tag.fill { background: var(--aub); color: #fff; }      /* never the same colour as the section */
+.project.pv1 .tag.fill { background: var(--rose); }
+.project.pv1 .visit { background: var(--rose); color: #fff; }
+.project.pv1 .visit:hover { background: #fff; color: var(--aub); }
+.project.pv2 .visit:hover { background: #fff; color: var(--aub); }
