@@ -623,10 +623,6 @@ em.serif { font: italic 500 1em/1 var(--serif); color: var(--rose); letter-spaci
 .contact h2, .contact p, .contact a:not(.email) { color: #fff; }
 .contact h2 em.serif { color: var(--rose-light); }
 .contact .email { background: var(--rose); color: #fff; }
-.star { position: absolute; pointer-events: none; fill: var(--gold); }
-.star svg { display: block; width: 100%; height: 100%; }
-.star-big { width: 40px; height: 40px; right: 10%; top: 90px; transform: rotate(-10deg); }
-.star-small { width: 22px; height: 22px; right: 16%; top: 170px; }
 .label::before { color: var(--gold); }
 
 /* PHONES: stack the hero */
@@ -638,7 +634,6 @@ em.serif { font: italic 500 1em/1 var(--serif); color: var(--rose); letter-spaci
   .ctas { margin-top: 22px; }
   .ctas a { padding: 13px 20px; font-size: 14px; }
   .about { padding-top: 100px; }
-  .star-big { top: 50px; right: 8%; } .star-small { top: 110px; right: 20%; }
 }
 
 /* ---- Fixes: readable tiles, visible buttons and tags on coloured sections ---- */
@@ -651,3 +646,12 @@ em.serif { font: italic 500 1em/1 var(--serif); color: var(--rose); letter-spaci
 .project.pv1 .visit { background: var(--rose); color: #fff; }
 .project.pv1 .visit:hover { background: #fff; color: var(--aub); }
 .project.pv2 .visit:hover { background: #fff; color: var(--aub); }
+
+/* ---- Round 3: small gold touches and fixes ---- */
+.btn-line { background: #fff; border-color: #fff; }               /* solid white, not see-through */
+.btn-line:hover { background: var(--aub); border-color: var(--aub); color: #fff; }
+.intro h1 em.serif { white-space: nowrap; }                        /* keep "web developer" on one line */
+.wordmark span { color: #d6a024; }                             /* gold full stop in the logo */
+::selection { background: var(--gold); color: var(--aub); }        /* highlighting text turns gold */
+.key.enter .cap, .key.enter .letter { color: var(--aub); }
+.key.enter .arrow path { stroke: var(--aub); }
