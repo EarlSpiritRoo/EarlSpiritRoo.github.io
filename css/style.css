@@ -524,3 +524,119 @@ em.serif { color: var(--berry); }
   .chip .ci { width: 24px; height: 24px; }
   .chip .ci svg { width: 14px; height: 14px; }
 }
+
+/* ================================================================
+   20. SUGAR PALETTE
+   Colours taken from a magical-girl cover: blush pink, lilac,
+   deep aubergine, rose and a little gold. Everything is flat:
+   no gradients, glows or shadows. Headings use the Fraunces serif.
+   ================================================================ */
+:root {
+  --blush: #f7dfe9;      /* page background */
+  --rose: #d9628f;       /* highlights, Cook Dine Host, email button */
+  --rose-light: #ebaac4;
+  --lilac: #b79ad4;      /* MAKO, Skills */
+  --lilac-light: #dccbee;
+  --aub: #3d2c47;        /* text, Marion's Kitchen, contact */
+  --gold: #e9b949;       /* the two stars in contact */
+  --text: #3d2c47;
+  --muted: #6e5a72;
+  --plum: #3d2c47;
+  --accent: #d9628f;
+  --berry: #d9628f;
+  --cream: #f7dfe9;
+  --serif: "Fraunces", Georgia, serif;
+  --heading: "Fraunces", Georgia, serif;
+  --pinstripe: repeating-linear-gradient(90deg, rgba(217,98,143,.10) 0 1px, transparent 1px 28px);
+}
+
+/* Pink pinstripe background */
+body, .hero, .indie-work, .screens { background-color: var(--blush); background-image: var(--pinstripe); }
+.about { background: #fff; }
+
+/* Serif headings (the keyboard keeps its chunky sans letters) */
+.intro h1, .about .big, .work-head h2, .project h3, .indie-top h2, .indie-content h3, .screens h2, .skills h2, .contact h2 {
+  font-family: var(--heading); font-weight: 600; letter-spacing: -0.025em; }
+em.serif { font: italic 500 1em/1 var(--serif); color: var(--rose); letter-spacing: -0.01em; }
+
+/* HERO: text on the left, keyboard on the right */
+.hero { position: relative; z-index: 7; overflow: visible; padding-bottom: 0; }
+.hero-split { display: grid; grid-template-columns: 1.25fr .9fr; align-items: center; gap: 24px; max-width: 1240px; margin: 0 auto; padding: 40px var(--pad) 110px; }
+.hero .intro { padding: 0; margin: 0; max-width: none; }
+.intro h1 { font-size: clamp(42px, 4.6vw, 70px); line-height: 1.02; }
+.hero .kb-wrap { margin: 0; padding: 0; max-width: none; }
+.intro .status { display: inline-flex; align-items: center; gap: 10px; background: #fff; border-radius: 99px; padding: 8px 16px 8px 10px; margin: 0 0 26px;
+  font: 600 13px/1 var(--display); color: var(--aub); }
+.status .dot { width: 9px; height: 9px; border-radius: 50%; background: #3fae7d; box-shadow: 0 0 0 4px rgba(63,174,125,.18); }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.ctas a { font: 600 15px/1 var(--display); text-decoration: none; padding: 15px 24px; border-radius: 99px; transition: background-color .2s, color .2s; }
+.btn-main { background: var(--aub); color: #fff; }
+.btn-main:hover { background: var(--rose); }
+.btn-line { border: 1.5px solid var(--aub); color: var(--aub); }
+.btn-line:hover { background: var(--aub); color: #fff; }
+.ctas a:focus-visible { outline: 3px solid var(--rose); outline-offset: 3px; }
+/* Lace edge where the hero meets the white section, like the cover's frame */
+.hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: -29px; height: 30px; z-index: 6; pointer-events: none;
+  background: radial-gradient(circle at 15px 0, var(--blush) 14.5px, transparent 15px) repeat-x; background-size: 30px 30px; }
+.about { padding-top: 140px; }
+
+/* Keyboard: chunky sans letters, white text on the dark key */
+.key .letter, .key .cap { font-family: var(--display); }
+.key-dark .letter, .key-dark .cap { color: #fff; }
+.key-dark .arrow path { stroke: #fff; }
+
+/* ABOUT boxes */
+.fact:nth-child(1) { background: var(--rose); } .fact:nth-child(1) * { color: #fff; }
+.fact:nth-child(2) { background: var(--aub); } .fact:nth-child(2) * { color: #fff; }
+.fact:nth-child(3) { background: var(--lilac); }
+.edu div { background: var(--blush); }
+
+/* WORK: solid aubergine, rose and lilac */
+.project.pv1 { --bg: var(--aub); --fg: #fff; }
+.project.pv2 { --bg: var(--rose); --fg: #fff; }
+.project.pv3 { --bg: var(--lilac); }
+.project.pv1 h3, .project.pv2 h3, .project.pv1 .pj-intro, .project.pv2 .pj-intro { color: #fff; }
+.visit, .now a, .more a, .indie-link { background: var(--aub); }
+.visit:hover, .now a:hover, .more a:hover, .indie-link:hover { background: var(--rose); }
+.tag.fill { background: var(--rose); }
+
+/* SIDE PROJECTS (layout unchanged for now, recoloured only) */
+.indie-card, .indie-feature, .indie-outro { background: #fff; border: 0; }
+.indie-meta, .indie-eyebrow { color: var(--rose); }
+.indie-content h3 span, .indie-outro-star { color: var(--rose); }
+
+/* SCREENS */
+.hl { background: var(--rose); }
+.screens .ccard.on { outline-color: var(--rose); }
+
+/* SKILLS on solid lilac */
+.skills { background: var(--lilac); }
+.skills h2, .skills .sk-sub { color: var(--aub); }
+.skills h2 em.serif { color: #fff; }
+.skill-group.sg-rose { background: var(--blush); }
+.skill-group.sg-lilac { background: var(--lilac-light); }
+.skill-group.sg-butter { background: #f3c9d9; }
+.chip .ci b { color: var(--aub); }
+
+/* CONTACT: aubergine with two flat gold stars */
+.contact { position: relative; background: var(--aub); color: #fff; }
+.contact h2, .contact p, .contact a:not(.email) { color: #fff; }
+.contact h2 em.serif { color: var(--rose-light); }
+.contact .email { background: var(--rose); color: #fff; }
+.star { position: absolute; pointer-events: none; fill: var(--gold); }
+.star svg { display: block; width: 100%; height: 100%; }
+.star-big { width: 40px; height: 40px; right: 10%; top: 90px; transform: rotate(-10deg); }
+.star-small { width: 22px; height: 22px; right: 16%; top: 170px; }
+.label::before { color: var(--gold); }
+
+/* PHONES: stack the hero */
+@media (max-width: 899px) {
+  .hero-split { display: flex; flex-direction: column; flex: 1; align-items: stretch; padding: 24px var(--pad) 70px; gap: 0; }
+  .hero .intro { margin-top: auto; }
+  .hero .kb-wrap { width: 100%; margin-top: 36px; margin-bottom: auto; }
+  .intro .status { margin-bottom: 18px; font-size: 12px; }
+  .ctas { margin-top: 22px; }
+  .ctas a { padding: 13px 20px; font-size: 14px; }
+  .about { padding-top: 100px; }
+  .star-big { top: 50px; right: 8%; } .star-small { top: 110px; right: 20%; }
+}
