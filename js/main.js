@@ -119,7 +119,7 @@ function startMotion() {
     scrollTrigger: { trigger: '.screens', start: 'top 70%' } });
 
 
-  // 5. Skills: heading rises in (the washing line runs on its own script below)
+  // 5. Skills: heading rises in
   gsap.from('.skills h2', { y: 50, opacity: 0, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: '.skills', start: 'top 75%' } });
 
   // 6. Contact: headline grows into place
@@ -127,140 +127,6 @@ function startMotion() {
     scrollTrigger: { trigger: '.contact', start: 'top 90%', end: 'top 30%', scrub: true } });
 }
 if (document.readyState === 'complete') startMotion(); else addEventListener('load', startMotion);
-
-/* ================================================================
-   WASHING LINE
-   The rope sags like a real line. Cards slide along it on their own,
-   and moving the cursor across it sends ripples down the rope.
-   ================================================================ */
-(() => {
-  const stage = document.getElementById('lineStage');
-  const ropePath = document.getElementById('ropePath');
-  const list = document.getElementById('cards');
-  const reduce = reduceMotion;
-  if (reduce) return;
-  stage.classList.remove('still');
-
-  // Repeat the cards so the line never runs out
-  const originals = [...list.children];
-  const pitch = () => originals[0].offsetWidth + (window.innerWidth < 900 ? 14 : 44);
-  let cards = [];
-  // Make sure there are always enough cards to fill the line, even after the window is resized
-  function fill() {
-    while (list.children.length * pitch() < stage.offsetWidth + pitch() * 3) {
-      originals.forEach(c => { const copy = c.cloneNode(true); copy.setAttribute('aria-hidden', 'true'); list.appendChild(copy); });
-    }
-    cards = [...list.children].map((el, i) => cards[i] || { el, tilt: (Math.sin(i * 12.9898) * 43758.5453 % 1) * 6 - 3, swing: 0, swingV: 0 });
-  }
-  fill();
-  addEventListener('resize', fill);
-
-  // Rope physics: a row of points that can move up and down
-  const N = 90;
-  const disp = new Float32Array(N), vel = new Float32Array(N);
-  let W = 0, TOP = 40, SAG = 46;
-  const resize = () => { W = stage.offsetWidth; SAG = Math.min(56, W * 0.035); TOP = window.innerWidth < 900 ? 26 : 40; };
-  resize(); addEventListener('resize', resize);
-
-  const baseY = x => TOP + SAG * 4 * (x / W) * (1 - x / W);
-  const dispAt = x => {
-    const f = Math.max(0, Math.min(N - 1.001, (x / W) * (N - 1))), i = Math.floor(f), t = f - i;
-    return disp[i] * (1 - t) + disp[i + 1] * t;
-  };
-  const yAt = x => baseY(x) + dispAt(x);
-
-  let offset = 0;
-  // Cursor: push the rope near the pointer, harder the faster it moves
-  let lastX = null, lastY = null;
-  stage.addEventListener('pointermove', e => {
-    const r = stage.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
-    if (lastX !== null) {
-      const speed = Math.min(80, Math.hypot(x - lastX, y - lastY));
-      const near = Math.abs(y - yAt(x)) < 120;
-      if (near) {
-        for (let i = 0; i < N; i++) {
-          const px = (i / (N - 1)) * W, d = (px - x) / 70;
-          vel[i] += speed * 9 * Math.exp(-d * d) * (y > yAt(x) ? 1 : -1);
-        }
-      }
-    }
-    lastX = x; lastY = y;
-  });
-  stage.addEventListener('pointerleave', () => { lastX = lastY = null; });
-
-  // Drag the line left or right (it keeps sliding a little when you let go)
-  let dragging = false, dragX = 0, fling = 0;
-  stage.addEventListener('pointerdown', e => {
-    if (e.button !== 0) return;                   // only a left click or a touch drags (right-click opens menus and DevTools)
-    dragging = true; dragX = e.clientX; fling = 0;
-    stage.setPointerCapture(e.pointerId); stage.classList.add('grabbing');
-  });
-  stage.addEventListener('pointermove', e => {
-    if (!dragging) return;
-    const dx = e.clientX - dragX; dragX = e.clientX;
-    offset -= dx; fling = Math.max(-40, Math.min(40, -dx));
-  });
-  const endDrag = () => { dragging = false; stage.classList.remove('grabbing'); };
-  stage.addEventListener('pointerup', endDrag);
-  stage.addEventListener('pointercancel', endDrag);
-  stage.addEventListener('lostpointercapture', endDrag);
-  // Leaving the page (a menu, DevTools, another tab) must never leave the line stuck mid-drag or mid-ripple
-  const settle = () => { endDrag(); lastX = lastY = null; fling = 0; disp.fill(0); vel.fill(0); };
-  addEventListener('blur', settle);
-  stage.addEventListener('contextmenu', settle);
-  document.addEventListener('visibilitychange', () => { if (document.hidden) settle(); });
-  // Re-measure whenever the stage itself changes size, not only on window resize
-  if ('ResizeObserver' in window) new ResizeObserver(() => { resize(); fill(); }).observe(stage);
-
-  let last = performance.now(), visible = !('IntersectionObserver' in window), raf = null;
-  function schedule() {
-    if (visible && !document.hidden && raf === null) { last = performance.now(); raf = requestAnimationFrame(frame); }
-  }
-  if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { visible = e.isIntersecting; schedule(); }).observe(stage);
-  document.addEventListener('visibilitychange', schedule);
-
-  function frame(now) {
-    raf = null;
-    if (!visible || document.hidden) return;
-    raf = requestAnimationFrame(frame);
-    const dt = Math.min(0.033, Math.max(0, (now - last) / 1000)); last = now;
-    if (W !== stage.offsetWidth) resize();        // the window or device changed size
-    // While DevTools or a resize briefly gives the line no width, skip drawing: dividing by zero would break every card
-    if (W > 0 && visible && !document.hidden) {
-      // Wave along the rope (two small steps for stability)
-      for (let s = 0; s < 2; s++) {
-        const h = dt / 2;
-        for (let i = 1; i < N - 1; i++) {
-          const acc = 1400 * (disp[i - 1] + disp[i + 1] - 2 * disp[i]) - 14 * disp[i] - 2.6 * vel[i];
-          vel[i] += acc * h;
-        }
-        for (let i = 1; i < N - 1; i++) { disp[i] += vel[i] * h; disp[i] = Math.max(-60, Math.min(60, disp[i])); }
-      }
-
-      // Draw the rope
-      let d = '';
-      for (let i = 0; i <= 60; i++) { const x = (i / 60) * W; d += (i ? 'L' : 'M') + x.toFixed(1) + ' ' + yAt(x).toFixed(1); }
-      ropePath.setAttribute('d', d);
-
-      // Slide the cards along and hang them from the rope
-      if (!dragging) { offset += dt * 34 + fling; fling *= 0.94; }
-      const p = pitch(), L = cards.length * p;
-      cards.forEach((c, i) => {
-        let x = ((i * p - offset) % L + L) % L - p;
-        const cx = x + c.el.offsetWidth / 2;
-        const y = yAt(cx);
-        const slope = (yAt(cx + 6) - yAt(cx - 6)) / 12;
-        // cards swing a little when the rope under them moves
-        const target = Math.atan(slope) * 57.3 * 0.9;
-        c.swingV += ((target - c.swing) * 60 - c.swingV * 7) * dt;
-        c.swing += c.swingV * dt;
-        if (!Number.isFinite(c.swing) || !Number.isFinite(c.swingV)) { c.swing = 0; c.swingV = 0; }   // never let a bad frame freeze a card
-        c.el.style.transform = `translate(${x.toFixed(1)}px, ${(y + 4).toFixed(1)}px) rotate(${(c.tilt + c.swing).toFixed(2)}deg)`;
-      });
-    }
-  }
-  schedule();
-})();
 
 /* ================================================================
    HEADER PILL, PHONE CAROUSEL AND HOW-I-WORK STEPS
